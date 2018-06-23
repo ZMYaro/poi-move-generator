@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Poi Move Generator</title>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		
+		<script type="text/javascript">
+			if (!Array.prototype.shuffle) {
+				Array.prototype.shuffle = function () {
+					return this.sort(() => Math.random() - 0.5);
+				};
+			}
+			
+			function randInt(min, max) {
+				return Math.floor(Math.random() * (max - min)) + min;
+			}
+			
+			const MAX_BEATS = 7;
+			
+			var allPrefixes = [
+				'split-time',
+				'isolated',
+				'partner'
+			];
+			const MAX_PREFIXES = 3;
+			
+			var allMains = [
+				'butterfly',
+				'fountain',
+				'isolation',
+				'orbital',
+				'thread the needle',
+				'stall',
+				'weave'
+			];
+			const MAX_MAINS = 3;
+			
+			
+			function generateMove() {
+				let move = '';
+				
+				let beats = randInt(0, MAX_BEATS + 1);
+				if (beats) {
+					move += beats + '-beat';
+				}
+				
+				let prefixCount = randInt(0, MAX_PREFIXES);
+				if (prefixCount) {
+					allPrefixes.shuffle();
+					for (let i = 0; i < prefixCount; i++) {
+						move += ' ' + allPrefixes[i];
+					}
+				}
+				
+				let mainCount = randInt(1, MAX_MAINS);
+				if (mainCount) {
+					allMains.shuffle();
+					for (let i = 0; i < prefixCount; i++) {
+						move += ' ' + allMains[i];
+					}
+				}
+				
+				return move;
+			}
+			
+			window.onload = function () {
+				var moveField = document.getElementById('move');
+				
+				document.getElementById('new-move-button').onclick = function () {
+					moveField.innerText = generateMove() + '?';
+				};
+				
+				// Generate a move to start.
+				moveField.innerText = generateMove() + '?';
+			};
+		</script>
+		
+		<link rel="stylesheet" type="text/css" href="material-elements.css" />
+		<style type="text/css">
+			body {
+				text-align: center;
+			}
+			#move {
+				font-size: 150%;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<p>Sure, you've got moves, but can you do a</p>
+		<p id="move">...</p>
+		<br />
+		<br />
+		<button id="new-move-button">Different Move</button>
+	</body>
+</html>
